@@ -39,7 +39,9 @@ void Group::sortStandings() {
         }
 
         //Fourth criteria: global goalsFor
-        return a->getGoalsFor() > b->getGoalsFor();
+        if (a->getGoalsFor() != b->getGoalsFor()){
+            return a->getGoalsFor() > b->getGoalsFor();
+        }
 
         //Fifth criteria: fair play
         if (a->getFairPlay() != b->getFairPlay()) {
