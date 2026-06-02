@@ -1,7 +1,4 @@
 #include "group.h"
-#include <algorithm>
-#include <stdexcept>
-
 
 void Group::addTeam(const std::shared_ptr<Team>& team) {
     if (teams.size() >= 4) {

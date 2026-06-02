@@ -7,16 +7,8 @@ int main() {
     
     try {
         worldCup.loadTeamsFromFile("teams.csv");
-        std::cout << "Teams loaded successfully! Starting web server...\n";
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << "\n";
-        return 1;
-    }
-
-    try {
-    worldCup.loadTeamsFromFile("teams.csv");
-    worldCup.loadExistingResults("results.csv");
-    std::cout << "Data loaded successfully!\n";
+        worldCup.loadExistingResults("results.csv");
+        std::cout << "Data loaded successfully!\n";
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;

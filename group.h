@@ -1,9 +1,11 @@
 #pragma once
+#include "team.h"
+#include"match.h"
 #include <string>
 #include <vector>
 #include <memory>
-#include "team.h"
-#include"match.h"
+#include <algorithm>
+#include <stdexcept>
 
 class Group{
 private:
@@ -17,6 +19,8 @@ public:
 
     void addTeam(const std::shared_ptr<Team>& team);
     void addMatch(const std::shared_ptr<Match>& match);
+
+    //Uses FIFA rules to sort the group
     void sortStandings();
     
     std::vector<std::shared_ptr<Team>> getTopTwo() const;
