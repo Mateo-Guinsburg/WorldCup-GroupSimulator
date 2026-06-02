@@ -29,20 +29,19 @@ int main() {
         res.set_redirect("/index.html");
     });
 
-    // 1. Botón: Ver tabla de grupos (Ahora envía HTML real)
+    
     svr.Get("/standings", [&](const httplib::Request& req, httplib::Response& res) {
         std::string groupLetter = req.get_param_value("group");
         std::string htmlResponse = worldCup.getGroupStandingsHTML(groupLetter);
         res.set_content(htmlResponse, "text/html");
     });
 
-    // 2. Botón: Ver tabla de terceros (Ahora envía HTML real)
+    
     svr.Get("/third-places", [&](const httplib::Request& req, httplib::Response& res) {
         std::string htmlResponse = worldCup.getThirdPlaceStandingsHTML();
         res.set_content(htmlResponse, "text/html");
     });
 
-    // 3. Botón: Cargar partido
     svr.Get("/add-match", [&](const httplib::Request& req, httplib::Response& res) {
         std::string g = req.get_param_value("group");
         std::string t1 = req.get_param_value("t1");
@@ -50,7 +49,6 @@ int main() {
         int g1 = std::stoi(req.get_param_value("g1"));
         int g2 = std::stoi(req.get_param_value("g2"));
 
-        // Here we keep using registerMatchResult, but send a clean HTML success message back
         worldCup.registerMatchResult(g, t1, t2, g1, g2);
         
         std::string successHTML = "<div class='success-msg'>Match Registered Successfully!<br>" + t1 + " " + std::to_string(g1) + " - " + std::to_string(g2) + " " + t2 + "</div>";
