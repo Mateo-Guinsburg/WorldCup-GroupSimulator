@@ -61,5 +61,8 @@ std::vector<std::shared_ptr<Team>> Group::getTopTwo() const{
 }
 
 std::shared_ptr<Team> Group::getThirdPlace() const{
+    if (teams.size() < 3) {
+        return nullptr;
+    }
     return teams[2]; 
 }

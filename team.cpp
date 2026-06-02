@@ -11,6 +11,9 @@ int Team::getFifaRanking() const{return fifaRanking;}
 
 
 void Team::addResult(int scored, int conceded){
+    if(matchesPlayed >= 3){
+        return;
+    }
     goalsFor += scored;
     goalsAgainst += conceded;
     matchesPlayed++;

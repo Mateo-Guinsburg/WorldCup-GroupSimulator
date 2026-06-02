@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup 2026 Simulator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #333; }
+        .header { text-align: center; color: #1a73e8; margin-bottom: 30px; }
+        .grid-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); flex: 1; min-width: 300px; max-width: 400px; }
+        h3 { margin-top: 0; color: #444; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 14px; margin-bottom: 5px; font-weight: bold; }
+        select, input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn { display: block; width: 100%; padding: 12px; margin-top: 10px; background-color: #1a73e8; color: white; border: none; border-radius: 5px; font-size: 15px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background-color: #1557b0; }
+        .btn-secondary { background-color: #34a853; }
+        .btn-secondary:hover { background-color: #2b8c46; }
+        
+        /* NEW TABLE STYLES */
+        .output-section { max-width: 820px; margin: 30px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .standings-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .standings-table th { background-color: #1a73e8; color: white; padding: 12px; text-align: center; }
+        .standings-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; font-weight: 500; }
+        .standings-table tr:hover { background-color: #f8f9fa; }
+        .standings-table td:nth-child(1), .standings-table td:nth-child(2), .standings-table th:nth-child(1), .standings-table th:nth-child(2) { text-align: left; }
+        .qualified { border-left: 5px solid #34a853; }
+        .eliminated { border-left: 5px solid #ea4335; opacity: 0.7; }
+        .divider { background-color: #333; color: white; font-weight: bold; text-align: center; }
+        .success-msg { color: #34a853; font-weight: bold; font-size: 18px; text-align: center; padding: 20px;}
+        .error-msg { color: #ea4335; font-weight: bold; text-align: center; padding: 20px;}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>World Cup 2026 Simulator</h1>
+    <p>Tournament Control Panel</p>
+</div>
+
+<div class="grid-container">
+    <div class="card">
+        <h3>View Standings</h3>
+        <div class="input-group">
+            <label>Select Group</label>
+            <select id="groupSelect">
+                <option value="A">Group A</option><option value="B">Group B</option>
+                <option value="C">Group C</option><option value="D">Group D</option>
+                <option value="E">Group E</option><option value="F">Group F</option>
+                <option value="G">Group G</option><option value="H">Group H</option>
+                <option value="I">Group I</option><option value="J">Group J</option>
+                <option value="K">Group K</option><option value="L">Group L</option>
+            </select>
+        </div>
+        <button class="btn" onclick="fetchGroup()">Load Group Table</button>
+        <button class="btn btn-secondary" onclick="fetchThirdPlaces()" style="margin-top: 20px;">Load Best Third Places</button>
+    </div>
+
+    <div class="card">
+        <h3>Register Match</h3>
+        <div class="input-group">
+            <label>Group Letter (A-L)</label>
+            <input type="text" id="matchGroup" placeholder="e.g. A" maxlength="1">
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div class="input-group" style="flex: 2;">
+                <label>Team 1 Name</label>
+                <input type="text" id="t1Name" placeholder="e.g. Argentina">
+            </div>
+            <div class="input-group" style="flex: 1;">
+                <label>Goals</label>
+                <input type="number" id="t1Goals" value="0" min="0">
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div class="input-group" style="flex: 2;">
+                <label>Team 2 Name</label>
+                <input type="text" id="t2Name" placeholder="e.g. Canada">
+            </div>
+            <div class="input-group" style="flex: 1;">
+                <label>Goals</label>
+                <input type="number" id="t2Goals" value="0" min="0">
+            </div>
+        </div>
+        <button class="btn" onclick="addMatch()">Submit Match Result</button>
+    </div>
+</div>
+
+<div class="output-section" id="outputArea">
+    <div style="text-align: center; color: #888; padding: 40px;">Select an option to view data here.</div>
+</div>
+
+<script>
+    // Notice we use .innerHTML now to render the HTML tags sent by C++
+    function updateDisplay(htmlData) {
+        document.getElementById('outputArea').innerHTML = htmlData;
+    }
+
+    function fetchGroup() {
+        const g = document.getElementById('groupSelect').value;
+        fetch('/standings?group=' + g).then(r => r.text()).then(d => updateDisplay(d));
+    }
+
+    function fetchThirdPlaces() {
+        fetch('/third-places').then(r => r.text()).then(d => updateDisplay(d));
+    }
+
+    function addMatch() {
+        const g = document.getElementById('matchGroup').value.toUpperCase();
+        const t1 = document.getElementById('t1Name').value;
+        const g1 = document.getElementById('t1Goals').value;
+        const t2 = document.getElementById('t2Name').value;
+        const g2 = document.getElementById('t2Goals').value;
+        
+        if(!g || !t1 || !t2) return;
+
+        fetch(`/add-match?group=${g}&t1=${t1}&g1=${g1}&t2=${t2}&g2=${g2}`)
+            .then(r => r.text()).then(d => updateDisplay(d));
+    }
+</script>
+
+</body>
+</html>
