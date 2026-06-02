@@ -12,6 +12,7 @@ void Group::addTeam(const std::shared_ptr<Team>& team) {
 
 void Group::addMatch(const std::shared_ptr<Match>& match){
     matches.push_back(match);
+    sortStandings();
 }
 
 void Group::sortStandings() {

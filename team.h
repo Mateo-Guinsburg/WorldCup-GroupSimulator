@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include<string>
 
 class Team{
 private:
@@ -16,16 +16,18 @@ public:
     Team(std::string name, std::string group, int ranking):name(name), group(group), points(0), goalsFor(0), 
     goalsAgainst(0), matchesPlayed(0), fairPlayPoints(0), fifaRanking(ranking){}
 
-    // Getters
+    //Getters
     std::string getName() const;
+    std::string getGroup() const;
     int getPoints() const;
-    int getGoalDifference() const;
     int getGoalsFor() const;
+    int getGoalDifference() const;
     int getMatchesPlayed() const;
     int getFairPlay() const;
     int getFifaRanking() const;
+    
 
-    // Method to update team stats after a match
+    //Method to update team stats after a match
     void addResult(int scored, int conceded);
     void applyCards(int yellow, int red);
 };

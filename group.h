@@ -12,7 +12,7 @@ private:
     std::vector<std::shared_ptr<Match>> matches;
 
 public:
-    // Constructor
+    //Constructor
     Group(const std::string& name):groupName(name){}
 
     void addTeam(const std::shared_ptr<Team>& team);
@@ -23,7 +23,7 @@ public:
     std::shared_ptr<Team> getThirdPlace() const;
     std::string getName() const {return groupName;}
     
-    // Getter to print table
+    //Getter to print table
     const std::vector<std::shared_ptr<Team>>& getTeams() const {return teams;}
     
 };
